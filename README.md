@@ -1,7 +1,6 @@
-[![CI](https://github.com/Sleitnick/RbxUtil/actions/workflows/ci.yaml/badge.svg)](https://github.com/Sleitnick/RbxUtil/actions/workflows/ci.yaml)
-[![Docs](https://github.com/Sleitnick/RbxUtil/actions/workflows/docs.yaml/badge.svg)](https://github.com/Sleitnick/RbxUtil/actions/workflows/docs.yaml)
-
 # RbxUtil
+
+### Forked by CMorrison82z from sleitnick
 
 | Module | Dependency | Description |
 | -- | -- | -- |
@@ -23,5 +22,5 @@
 | [TableUtil](https://sleitnick.github.io/RbxUtil/api/TableUtil) | `TableUtil = "sleitnick/table-util@1.1.4"` | Table utility functions |
 | [TaskQueue](https://sleitnick.github.io/RbxUtil/api/TaskQueue) | `TaskQueue = "sleitnick/task-queue@0.1.0"` | Batches tasks that occur on the same execution step |
 | [Timer](https://sleitnick.github.io/RbxUtil/api/Timer) | `Timer = "sleitnick/timer@1.1.1"` | Timer class |
-| [Trove](https://sleitnick.github.io/RbxUtil/api/Trove) | `Trove = "sleitnick/trove@0.4.1"` | Trove class for tracking and cleaning up objects |
+| Trove | Modified  | Trove class for tracking and cleaning up objects |
 | [WaitFor](https://sleitnick.github.io/RbxUtil/api/WaitFor) | `WaitFor = "sleitnick/wait-for@0.2.1"` | WaitFor class for awaiting instances |

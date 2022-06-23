@@ -263,9 +263,11 @@ end
 	trove:Add(tbl, "DoSomething")
 	```
 ]=]
-function Trove:Add(object: any, cleanupMethod: string?): any
+function Trove:Add(name : string, object: any, cleanupMethod: string?): any
+	assert(not self._objects[name], "Entry already exists for " .. name .. ". Add with another name")
+
 	local cleanup = GetObjectCleanupFunction(object, cleanupMethod)
-	table.insert(self._objects, {object, cleanup})
+	self._objects[name] = {object, cleanup}
 	return object
 end
 
@@ -280,10 +282,31 @@ end
 	trove:Remove(part)
 	```
 ]=]
-function Trove:Remove(object: any): boolean
+function Trove:RemoveFromObject(object: any): boolean
 	return self:_findAndRemoveFromObjects(object, true)
 end
 
+--[=[
+	@param object any -- Object to remove
+	Removes the object from the Trove and cleans it up.
+
+	```lua
+	local part = Instance.new("Part")
+	trove:Add(part)
+	trove:Remove(part)
+	```
+]=]
+function Trove:RemoveFromName(name: string): boolean
+	local object = self._objects[name]
+
+	if not object then return false end
+
+	self:_cleanupObject(object[1], object[2])
+
+	self._objects[name] = nil
+
+	return true
+end
 
 --[=[
 	Cleans up all objects in the trove. This is
@@ -291,7 +314,7 @@ end
 	within the trove.
 ]=]
 function Trove:Clean()
-	for _,obj in ipairs(self._objects) do
+	for _,obj in pairs(self._objects) do
 		self:_cleanupObject(obj[1], obj[2])
 	end
 	table.clear(self._objects)
@@ -300,11 +323,10 @@ end
 
 function Trove:_findAndRemoveFromObjects(object: any, cleanup: boolean): boolean
 	local objects = self._objects
-	for i,obj in ipairs(objects) do
+	for i,obj in pairs(objects) do
 		if obj[1] == object then
-			local n = #objects
-			objects[i] = objects[n]
-			objects[n] = nil
+			obj[i] = nil
+
 			if cleanup then
 				self:_cleanupObject(obj[1], obj[2])
 			end
@@ -340,7 +362,8 @@ end
 	:::
 ]=]
 function Trove:AttachToInstance(instance: Instance)
-	assert(instance:IsDescendantOf(game), "Instance is not a descendant of the game hierarchy")
+	--assert(instance:IsDescendantOf(game), "Instance is not a descendant of the game hierarchy")
+
 	return self:Connect(instance.Destroying, function()
 		self:Destroy()
 	end)
